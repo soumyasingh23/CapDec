@@ -1,3 +1,20 @@
+This code is based on the original repo https://github.com/DavidHuji/CapDec based on the paper ["CapDec: Text-Only Training for Image Captioning using Noise-Injected CLIP"](https://arxiv.org/abs/2211.00575), EMNLP 2022.
+
+To run the replicated results, execute train.ipynb.
+Requirements:
+1. Download the dataset
+2. Execute parse_karpathy.py - this will split and store the dataset in post_processed_karpthy
+3. In embedding_generator.py, specify the outpath for the given dataset and and modify the train, test and valid dataset path.
+4. Execute train.py by passing the dataset value and output path in the command line. The model will be saved at every checkpoint.
+5. To evaluate, pycocevalcap repo: https://github.com/sks3i/pycocoevalcap is used. Code provided in notebook file.
+
+Hyperparameter:
+1. Optimizer: Adam optimizer
+2. Loss function: Cross entropy loss
+3. Number of epochs: 10 (default)
+3. Learning rate scheduler is used
+2. Noise variance: 0.016
+
 Inference Notebook (a few different models): <a href="https://colab.research.google.com/drive/1Jgj0uaALtile2iyqlN1r72UYRe9SZw-H?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" height=20></a>
 
 ## [Link to YouTube Presentation](https://www.youtube.com/watch?v=UG7Q50J6m74)
