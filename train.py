@@ -402,7 +402,7 @@ def main():
     parser.add_argument('--prefix', default='coco_prefix', help='prefix for saved filenames')
     parser.add_argument('--noise_variance', type=float, default=0.0, help='noise variance')
     parser.add_argument('--uniform_noise', dest='uniform_noise', action='store_true', default=False, help='use uniform noise instead of gaussian')
-    parser.add_argument('--dont_norm', dest='dont_norm', action='store_true', default=False, help='dont normalize CLIP embeddings')
+    parser.add_argument('--dont_norm', dest='dont_norm', action='store_true', default=True, help='dont normalize CLIP embeddings')
     parser.add_argument('--lr', type=float, default=2e-5, help='learning rate')
     parser.add_argument('--epochs', type=int, default=10, help='number of epochs')
     parser.add_argument('--save_every', type=int, default=1, help='save every n epochs')
@@ -415,6 +415,7 @@ def main():
     parser.add_argument('--is_not_rn', dest='is_not_rn', action='store_true', default=False, help='Choose the CLIP backbone: False for RN, True for ViT')
     parser.add_argument('--use_image_embedding_as_clipcap', dest='use_image_embedding_as_clipcap', action='store_true', default=False, help='use image embedding as ClipCap')
     args = parser.parse_args()
+    print("data", args.data)
     if args.data == 'COCO':
         args.bs = 30
         if args.use_image_embedding_as_clipcap:
@@ -431,15 +432,17 @@ def main():
         if args.use_image_embedding_as_clipcap:
             args.data = './data/flicker30_RN50x4_train.pkl'
             args.val_pt = ''  # not used
-        else:
-            args.data = './data/flicker30_RN50x4_train_with_text_embeddings.pkl'
-            args.val_pt = './data/flicker30_RN50x4_validation_with_text_embeddings.pkl'
+        # else:
+        #     args.data = './data/flicker30_RN50x4_train_with_text_embeddings.pkl'
+        #     args.val_pt = './data/flicker30_RN50x4_validation_with_text_embeddings.pkl'
         if args.dont_norm:
             if args.use_image_embedding_as_clipcap:
                 exit('NONORM is not supported yet with use_image_embedding_as_clipcap')
             else:
                 args.data = './data/flicker30_RN50x4_train_with_text_embeddings_not_norm.pkl'
                 args.val_pt = ''
+    print(args.data)
+    print(args.val_pt)
     prefix_length = args.prefix_length
     dataset = ClipCocoDataset(args.data, prefix_length, normalize_prefix=not args.dont_norm, use_image_embedding_as_clipcap=args.use_image_embedding_as_clipcap)
     prefix_dim = 640 if not args.is_not_rn else 512

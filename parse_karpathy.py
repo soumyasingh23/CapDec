@@ -1,14 +1,14 @@
 import pickle, json
 
-kagle_json = 'annotations/dataset_coco_from_kaggle.json'
-new_json_train = 'post_processed_karpthy_coco/train.json'
-new_json_test = 'post_processed_karpthy_coco/test.json'
-new_json_val = 'post_processed_karpthy_coco/val.json'
+kagle_json = 'annotations/dataset_flickr8k.json'
+new_json_train = 'post_processed_karpthy/train.json'
+new_json_test = 'post_processed_karpthy/test.json'
+new_json_val = 'post_processed_karpthy/val.json'
 
 
 def map_format_kaggle_to_clipcap():
     def extract_imgid_from_name(filename):
-        return str(int(filename.split('.')[0].split('_')[-1]))
+        return str(int(filename.split('.')[0].split('_')[0]))
 
     with open(kagle_json) as f:
         kaggle_data = json.load(f)
@@ -20,7 +20,7 @@ def map_format_kaggle_to_clipcap():
     for img in kaggle_data['images']:
         imgid = extract_imgid_from_name(img['filename'])
         for cap in img['sentences']:
-            correct_format = {"image_id": int(imgid), "caption": cap['raw'], "id": int(cap['sentid'])}
+            correct_format = {"image_id": int(imgid), "caption": cap['raw'], "id": int(cap['sentid']), "filename":img['filename']}
             splits[img['split']].append(correct_format)
 
     DBG = False
@@ -38,7 +38,7 @@ def map_format_kaggle_to_clipcap():
 
     if DBG:
         # rons annotations
-        with open('annotations/train_caption_of_real_training.json') as f:
+        with open('annotations/dataset_flickr8k.json') as f:
         # with open('../../train_caption.json') as f:
             cur_data = json.load(f)
         ids = [str(int(c['image_id'])) for c in cur_data]

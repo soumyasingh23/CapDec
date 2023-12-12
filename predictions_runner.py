@@ -169,7 +169,7 @@ def make_preds(data, model: ClipCaptionModel, out_path, tokenizer, dataset_mode,
         images_root = '/home/gamir/DER-Roei/davidn/CLIP_prefix_caption/data/coco/val2014'
         images_root = '../myprivate_coco/val2014'
     elif dataset_mode == 1:
-        images_root = '/home/gamir/DER-Roei/davidn/flicker30/flickr30k_images'
+        images_root = 'flickr8kforStyle/Images'
     elif dataset_mode == 2 or dataset_mode == 3 or dataset_mode == 4:
         images_root = '/home/gamir/DER-Roei/davidn/flicker8kforStyle/Images'
     elif dataset_mode == 6:
@@ -350,7 +350,7 @@ def load_data(dataset_mode):
             data = json.load(f)
     elif dataset_mode == 1:
         with open(
-                f'/home/gamir/DER-Roei/davidn/flicker30/dataset_flickr30k_correct_format.jsonvalidation',
+                f'post_processed_karpthy/val.json',
                 'r') as f:
             data = json.load(f)
     elif dataset_mode == 2:
@@ -391,7 +391,7 @@ def load_data(dataset_mode):
     clean_data_of_train_list = False and (dataset_mode == 0)  # only for coco
     if clean_data_of_train_list:
         train_list_img_ids = {}
-        pt_train_list = '/home/gamir/DER-Roei/davidn/CLIP_prefix_caption/data/coco/annotations/train_caption.json'
+        pt_train_list = 'post_processed_karpthy/train.json'
         with open(pt_train_list) as f:
             train_data = json.load(f)
         for d in train_data:
@@ -417,7 +417,7 @@ def main():
     print('loaded tokenizer')
     sys.stdout.flush()
 
-    images_root = "./data/coco/train2014"
+    images_root = "./flickr8kforStyle/Images"
     if not os.path.isdir(images_root):
         images_root = "./data/coco/val2014"
 

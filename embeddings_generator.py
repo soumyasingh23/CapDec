@@ -61,7 +61,7 @@ def main(clip_model_type, clip_model_name, out_path, annotations_path, images_pa
         if not add_text_embedding:
             if images_path != 'NoImgs':
                 if data_mode == 0:
-                    filename = f"./data/coco/train2014/COCO_train2014_{int(img_id):012d}.jpg"
+                    filename = f"flickr8kforStyle/{int(img_id):012d}.jpg"
                 else:
                     filename = images_path + d['filename']
                 if os.path.isfile(filename):
@@ -110,10 +110,14 @@ def main(clip_model_type, clip_model_name, out_path, annotations_path, images_pa
 
 def run_main():
     parser = argparse.ArgumentParser()
+    print("in main")
     parser.add_argument('--clip_model_type', default="RN50x4", choices=('RN50', 'RN101', 'RN50x4', 'ViT-B/32'))
     parser.add_argument('--dataset_mode', type=float, default=0.0)  # 0 for COCO!!, 1 for flicker30, 2 humor style,3 romantic,4 factual of style,6 harrypotter, 7 for news.
     parser.add_argument('--fix_gender_imbalance_mode', type=int, default=0)  # 1 for both genders, 2 for man only, 3 for woman only
+    print("in main2")
     args = parser.parse_args()
+    print("in main3")
+    print("**dataset", args)
     clip_model_name = args.clip_model_type.replace('/', '_')
     if args.dataset_mode == 0:
         out_path = f"./data/coco/verified_split_COCO_train_set.pkl"
@@ -134,8 +138,9 @@ def run_main():
         if add_text_embedding:
             out_path = f"./data/flicker30_{clip_model_name}_train_with_text_embeddings_not_norm.pkl"
             print(f'Text embeddings will be added to the dataset')
-        annotations_path = f"/home/gamir/DER-Roei/davidn/flicker30/dataset_flickr30k_correct_format.jsontrain"
-        images_path = f"/home/gamir/DER-Roei/davidn/flicker30/flickr30k_images/"
+        annotations_path = f"post_processed_karpthy/train.json"
+        images_path = f"flickr8kforStyle/Images"
+        print(images_path)
     elif args.dataset_mode == 1.5:
         out_path = f"./data/flicker30_{clip_model_name}_validation.pkl"
         if add_text_embedding:
@@ -186,4 +191,5 @@ def run_main():
 
 
 if __name__ == '__main__':
+    print("in main")
     run_main()
